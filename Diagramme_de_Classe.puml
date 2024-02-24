@@ -1,0 +1,33 @@
+@startuml
+class User {
+  +username: string
+  +email: string
+  +phone_number: string
+  +is_superuser: boolean
+}
+
+class Product {
+  +name: string
+  +description: string
+  +price: decimal
+  +available: boolean
+  +image: string
+}
+
+class Category {
+  +name: string
+  +description: string
+}
+
+class Cart {
+}
+
+class CartItem {
+  +quantity: int
+}
+
+User "1" -- "1" Cart
+Cart "1" -- "*" CartItem
+CartItem "*" -- "1" Product
+Product "*" -- "*" Category
+@enduml

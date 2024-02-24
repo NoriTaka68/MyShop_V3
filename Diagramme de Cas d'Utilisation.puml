@@ -1,0 +1,21 @@
+@startuml
+left to right direction
+actor User as u
+actor Superuser as su
+
+package "MyShop" {
+  usecase "Browse Products" as UC1
+  usecase "Add Product to Cart" as UC2
+  usecase "Remove Product from Cart" as UC3
+  usecase "Checkout" as UC4
+  usecase "Manage Products" as UC5
+  usecase "Manage Users" as UC6
+}
+
+u --> UC1
+u --> UC2
+u --> UC3
+u --> UC4
+su --> UC5
+su --> UC6
+@enduml

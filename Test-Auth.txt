@@ -1,0 +1,14 @@
+Bien sûr, je vais expliquer en détail ce que j'ai testé dans le code modifié.
+
+    Configuration du projet Django :
+    J'ai supposé que vous aviez déjà installé et configuré rest_framework_simplejwt pour votre projet Django. Cela inclut l'ajout de rest_framework_simplejwt à la liste INSTALLED_APPS et la modification de DEFAULT_AUTHENTICATION_CLASSES dans les paramètres du projet.
+    Modification du code de test :
+
+    J'ai supprimé l'importation de Token depuis rest_framework.authtoken.models, car nous utilisons maintenant l'authentification JWT au lieu de l'authentification par jeton.
+    Dans la méthode setUpTestData, j'ai créé uniquement les utilisateurs superutilisateur et normal, sans générer de jetons.
+    Dans la méthode test_superuser_access, j'ai généré un jeton JWT pour le superutilisateur en utilisant RefreshToken.for_user(self.superuser). J'ai extrait le jeton d'accès en appelant str(refresh.access_token). Ensuite, j'ai défini l'en-tête d'autorisation avec ce jeton d'accès et effectué une requête GET sur la liste des utilisateurs. Le code vérifie si le superutilisateur peut accéder à la liste des utilisateurs en vérifiant que le code de statut HTTP est 200 OK.
+    Dans la méthode test_normal_user_access, j'ai effectué des étapes similaires pour générer un jeton JWT pour l'utilisateur normal, définir l'en-tête d'autorisation et effectuer une requête GET. Le code vérifie si l'utilisateur normal ne peut pas accéder à la liste des utilisateurs en vérifiant que le code de statut HTTP est 403 FORBIDDEN.
+
+Ces tests vérifient que l'authentification JWT fonctionne correctement et que les autorisations sont appliquées pour les utilisateurs superutilisateur et normal
+
+commande => python manage.py test shop.tests.test_models
