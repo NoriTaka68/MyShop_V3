@@ -1,14 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
+import {useCart} from '../../Context/CartContext';
 import NavBar from "../../Communs/NavBar/NavBar.jsx";
 import Footer from "../../Communs/Footer/Footer.jsx";
 
 const ProductDetails = () => {
     const [products, setProducts] = useState([]);
-    // Définissez l'URL de base de votre backend ici
+    // l'URL de base du backend
     const baseUrl = "http://127.0.0.1:8000";
-
+    const {addToCart} = useCart();
     useEffect(() => {
         const fetchProducts = async () => {
             // Utilisation de l'URL de base pour la requête
@@ -39,7 +40,10 @@ const ProductDetails = () => {
                                     {/* Assurez-vous que l'image est correctement affichée avec une URL absolue */}
                                     <img src={product.image} className="img-fluid" alt={product.name}/>
                                     <p className="card-text">{product.description}</p>
-                                    <Link to={`/products/${product.id}`} className="btn btn-primary">Voir Détails</Link>
+                                    <p className="card-text">Prix: {product.price} €</p>
+                                    <button onClick={() => addToCart(product)} className="btn btn-success">
+                                        Ajouter au panier
+                                    </button>
                                 </div>
                             </div>
                         </div>

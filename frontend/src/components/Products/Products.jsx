@@ -1,13 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
+import {useCart} from '../../Context/CartContext';
 import NavBar from "../../Communs/NavBar/NavBar.jsx";
 import Footer from "../../Communs/Footer/Footer.jsx";
 
 const ProductListPage = () => {
     const [products, setProducts] = useState([]);
-    // Définissez l'URL de base de votre backend ici
+    // l'URL de base
     const baseUrl = "http://127.0.0.1:8000";
+
+    const {addToCart} = useCart();
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -36,7 +39,11 @@ const ProductListPage = () => {
                                 <div className="card-body">
                                     <h5 className="card-title">{product.name}</h5>
                                     <p className="card-text">{product.description}</p>
+                                    <p className="card-text">Prix: {product.price} €</p>
                                     <Link to={`/products/${product.id}`} className="btn btn-primary">Voir Détails</Link>
+                                    <button onClick={() => addToCart(product)} className="btn btn-success ms-1">
+                                        Ajouter au panier
+                                    </button>
                                 </div>
                             </div>
                         </div>
