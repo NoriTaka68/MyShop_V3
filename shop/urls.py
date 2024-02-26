@@ -19,7 +19,7 @@ urlpatterns = [
     # URLs pour le panier
     path('cart/<int:user_id>/', views.cart_detail, name='cart-detail'),
     path('carts/', views.cart_list, name='cart-list'),  # Liste tous les paniers
-    path('cart/add/', views.add_product_to_cart, name='add-product-to-cart'),
+    path('cart/add/', views.add_product_to_cart, name='add_product_to_cart'),
     path('cart/update/', views.update_cart_item, name='update-cart-item'),
     path('cart/remove/<int:cart_item_id>/', views.remove_product_from_cart, name='remove-product-from-cart'),
 ]

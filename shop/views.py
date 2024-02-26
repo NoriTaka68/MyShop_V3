@@ -135,7 +135,7 @@ def add_product_to_cart(request):
     quantity = request.data.get('quantity', 1)
 
     product = get_object_or_404(Product, pk=product_id)
-    cart, created = Cart.objects.get_or_create(user=request.user, defaults={'active': True})
+    cart, created = Cart.objects.get_or_create(user=request.user)
     cart_item, created = CartItem.objects.update_or_create(
         cart=cart, product=product,
         defaults={'quantity': quantity}
