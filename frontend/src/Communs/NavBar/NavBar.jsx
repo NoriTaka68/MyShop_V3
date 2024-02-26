@@ -1,7 +1,9 @@
 import React from 'react';
 import {Link} from "react-router-dom";
+import {useAuth} from '../../Context/AuthContext';
 
 const NavBar = () => {
+    const {isAuthenticated, logout} = useAuth();
     return (
         <>
             <nav className="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
@@ -31,6 +33,11 @@ const NavBar = () => {
                             <input className="form-control me-2" type="search" placeholder="Search"
                                    aria-label="Search"/>
                             <button className="btn btn-outline-success" type="submit">Search</button>
+                            {isAuthenticated ? (
+                                <button onClick={logout} className="btn btn-danger ms-1">Logout</button>
+                            ) : (
+                                <Link to="/login" className="btn btn-primary ms-1">Login</Link>
+                            )}
                         </form>
                     </div>
                 </div>

@@ -1,18 +1,20 @@
-// src/components/Cart/Cart.js
 import React from 'react';
-import {useCart} from '../../Context/CartContext'; // Ajustez le chemin selon votre structure
+import {useCart} from '../../Context/CartContext';
 import {useAuth} from '../../Context/AuthContext';
-import {submit} from '../../Context/CartContext'
+import {useNavigate} from 'react-router-dom';
 import NavBar from "../../Communs/NavBar/NavBar.jsx";
-import Footer from "../../Communs/Footer/Footer.jsx"; // Vérifiez le chemin
+import Footer from "../../Communs/Footer/Footer.jsx";
 
 const Cart = () => {
-    const {cartItems, removeFromCart, clearCart} = useCart();
+    const {cartItems, removeFromCart, clearCart, submitCart} = useCart(); // Accès à submitCart via useCart
     const {authToken} = useAuth();
+    const history = useNavigate();
 
     const handleCheckout = async () => {
         if (!authToken) {
+            console.log(authToken)
             alert("Veuillez vous connecter pour continuer.");
+            // Optionnel: redirection vers la page de connexion
             return;
         }
 
@@ -21,9 +23,14 @@ const Cart = () => {
             return;
         }
 
-        await submitCart(cartItems, authToken);
-        clearCart(); // Optionnel, vide le panier après une validation réussie
-        alert("Votre commande a été soumise avec succès !");
+        try {
+            await submitCart(cartItems, authToken);
+            clearCart();
+            alert("Votre commande a été soumise avec succès !");
+        } catch (error) {
+            // Gérer l'erreur, par exemple afficher un message d'erreur spécifique
+            alert("Une erreur est survenue lors de la soumission de votre commande.");
+        }
     };
 
 
@@ -67,7 +74,7 @@ const Cart = () => {
                         </table>
                         <div className="d-flex justify-content-end">
                             <button className="btn btn-success" onClick={handleCheckout}>Valider le Panier</button>
-                            <button className="btn btn-secondary" onClick={clearCart}>Vider le Panier</button>
+                            <button className="btn btn-secondary ms-1" onClick={clearCart}>Vider le Panier</button>
                         </div>
                     </>
                 )}

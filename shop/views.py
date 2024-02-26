@@ -125,6 +125,7 @@ def cart_detail(request, user_id):
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def add_product_to_cart(request):
     user_id = request.data.get('user_id')
     product_id = request.data.get('product_id')
