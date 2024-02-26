@@ -29,7 +29,8 @@ const Cart = () => {
             alert("Votre commande a été soumise avec succès !");
         } catch (error) {
             // Gérer l'erreur, par exemple afficher un message d'erreur spécifique
-            alert("Une erreur est survenue lors de la soumission de votre commande.");
+            //alert("Une erreur est survenue lors de la soumission de votre commande.");
+            console.log(error)
         }
     };
 

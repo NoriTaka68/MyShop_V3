@@ -3,9 +3,10 @@ from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .models import Product, Category, Cart, CartItem, User
-from .serializers import ProductSerializer, CategorySerializer, UserSerializer, CartSerializer
+from .serializers import ProductSerializer, CategorySerializer, UserSerializer, CartSerializer, CartItemSerializer
 from rest_framework import status
 from .permissions import IsSuperUser
+import logging
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -124,26 +125,27 @@ def cart_detail(request, user_id):
     return Response(serializer.data)
 
 
+logger = logging.getLogger(__name__)
+
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_product_to_cart(request):
-    user_id = request.data.get('user_id')
     product_id = request.data.get('product_id')
     quantity = request.data.get('quantity', 1)
 
-    user_cart, created = Cart.objects.get_or_create(user_id=user_id)
     product = get_object_or_404(Product, pk=product_id)
+    cart, created = Cart.objects.get_or_create(user=request.user, defaults={'active': True})
+    cart_item, created = CartItem.objects.update_or_create(
+        cart=cart, product=product,
+        defaults={'quantity': quantity}
+    )
 
-    cart_item, created = CartItem.objects.get_or_create(cart=user_cart, product=product,
-                                                        defaults={'quantity': quantity})
-    if not created:
-        cart_item.quantity += int(quantity)
-        cart_item.save()
-
-    return Response({'message': 'Product added to cart successfully.'}, status=status.HTTP_201_CREATED)
+    serializer = CartItemSerializer(cart_item)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-@api_view(['PUT'])
+@api_view(['POST'])
 def update_cart_item(request):
     cart_item_id = request.data.get('cart_item_id')
     quantity = request.data.get('quantity')

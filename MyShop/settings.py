@@ -138,6 +138,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Autorisé les requetes a l'api depuis des urls externes
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "http://192.168.1.55",
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
