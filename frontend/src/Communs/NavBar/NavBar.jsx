@@ -1,23 +1,15 @@
-import React, {useState} from 'react';
-import {Link, useNavigate} from "react-router-dom";
+import React from 'react';
+import {Link} from "react-router-dom";
 import {useAuth} from '../../Context/AuthContext';
-import {useSearch} from '../../Context/SearchContext'; // Assurez-vous d'importer useSearch depuis le bon fichier
+
 
 const NavBar = () => {
     const {isAuthenticated, logout} = useAuth();
-    const {setSearchTerm} = useSearch(); // Utilisez setSearchTerm depuis useSearch
-    const [localSearchTerm, setLocalSearchTerm] = useState('');
-    const navigate = useNavigate();
-
-    const handleSearch = (e) => {
-        e.preventDefault();
-        setSearchTerm(localSearchTerm); // Mettez à jour le terme de recherche global avec setSearchTerm
-        //navigate('/');
-    }
 
 
     return (
         <>
+
             <nav className="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
                 <div className="container-fluid">
                     <Link to="/" className="navbar-brand">MyShop</Link>
@@ -36,6 +28,9 @@ const NavBar = () => {
                             </li>
                             <li className="nav-item">
                                 <Link to="/cart" className="nav-link">Cart</Link>
+                            </li>
+                            <li>
+                                <Link to="/signup" className="nav-link">SignUP</Link>
                             </li>
                         </ul>
                         <form className="d-flex" role="search">

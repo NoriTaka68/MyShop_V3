@@ -32,7 +32,7 @@ def user_detail(request, id):
 
 @api_view(['GET', 'POST'])
 # Je spécifie que seul l'administrateur pour avoir access a cette route
-@permission_classes([IsSuperUser])
+# @permission_classes([IsSuperUser])
 def user_list(request):
     if request.method == 'GET':
         users = User.objects.all()
