@@ -1,3 +1,4 @@
+// Products.jsx
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
@@ -7,32 +8,42 @@ import Footer from "../../Communs/Footer/Footer.jsx";
 
 const ProductListPage = () => {
     const [products, setProducts] = useState([]);
-    // l'URL de base
-    const baseUrl = "http://127.0.0.1:8000";
-
+    const [searchTerm, setSearchTerm] = useState('');
     const {addToCart} = useCart();
+    const baseUrl = "http://127.0.0.1:8000";
 
     useEffect(() => {
         const fetchProducts = async () => {
             const response = await axios.get(`${baseUrl}/api/products/`);
-            console.log(response.data);
-            // Construisez l'URL absolue pour chaque image de produit
             const productsWithAbsoluteImageUrl = response.data.map(product => ({
                 ...product,
-                image: baseUrl + product.image // Construire l'URL absolue de l'image
+                image: baseUrl + product.image
             }));
             setProducts(productsWithAbsoluteImageUrl);
         };
         fetchProducts();
     }, []);
 
+    // Filtrer les produits en fonction du terme de recherche
+    const filteredProducts = products.filter(product =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     return (
         <>
             <NavBar/>
             <div className="container mt-5">
                 <h2 className="mb-4">Nos Produits</h2>
+                <input
+                    type="text"
+                    placeholder="Rechercher un produit..."
+                    className="form-control mb-4"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
                 <div className="row">
-                    {products.map((product) => (
+                    {filteredProducts.map((product) => (
                         <div className="col-sm-12 col-md-6 col-lg-4 mb-4" key={product.id}>
                             <div className="card h-100">
                                 <img src={product.image} className="card-img-top img-fluid" alt={product.name}/>

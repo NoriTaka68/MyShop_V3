@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import {BrowserRouter} from "react-router-dom";
 import {AuthProvider} from './Context/AuthContext';
 import {CartProvider} from './Context/CartContext';
+import {SearchProvider} from "./Context/SearchContext.jsx";
 import App from './App.jsx'
 
 //JS
@@ -17,7 +18,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <React.StrictMode>
             <AuthProvider>
                 <CartProvider>
-                    <App/>
+                    <SearchProvider>
+                        <App/>
+                    </SearchProvider>
                 </CartProvider>
             </AuthProvider>
         </React.StrictMode>,

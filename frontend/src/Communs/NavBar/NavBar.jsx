@@ -1,9 +1,21 @@
-import React from 'react';
-import {Link} from "react-router-dom";
+import React, {useState} from 'react';
+import {Link, useNavigate} from "react-router-dom";
 import {useAuth} from '../../Context/AuthContext';
+import {useSearch} from '../../Context/SearchContext'; // Assurez-vous d'importer useSearch depuis le bon fichier
 
 const NavBar = () => {
     const {isAuthenticated, logout} = useAuth();
+    const {setSearchTerm} = useSearch(); // Utilisez setSearchTerm depuis useSearch
+    const [localSearchTerm, setLocalSearchTerm] = useState('');
+    const navigate = useNavigate();
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        setSearchTerm(localSearchTerm); // Mettez à jour le terme de recherche global avec setSearchTerm
+        //navigate('/');
+    }
+
+
     return (
         <>
             <nav className="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
@@ -25,14 +37,8 @@ const NavBar = () => {
                             <li className="nav-item">
                                 <Link to="/cart" className="nav-link">Cart</Link>
                             </li>
-                            <li className="nav-item">
-                                <Link to="/login" className="nav-link">Login</Link>
-                            </li>
                         </ul>
                         <form className="d-flex" role="search">
-                            <input className="form-control me-2" type="search" placeholder="Search"
-                                   aria-label="Search"/>
-                            <button className="btn btn-outline-success" type="submit">Search</button>
                             {isAuthenticated ? (
                                 <button onClick={logout} className="btn btn-danger ms-1">Logout</button>
                             ) : (
@@ -42,7 +48,6 @@ const NavBar = () => {
                     </div>
                 </div>
             </nav>
-
         </>
     );
 };

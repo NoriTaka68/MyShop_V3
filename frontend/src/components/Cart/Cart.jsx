@@ -8,7 +8,7 @@ import Footer from "../../Communs/Footer/Footer.jsx";
 const Cart = () => {
     const {cartItems, removeFromCart, clearCart, submitCart} = useCart(); // Accès à submitCart via useCart
     const {authToken} = useAuth();
-    const history = useNavigate();
+    const navigate = useNavigate();
 
     const handleCheckout = async () => {
         if (!authToken) {
@@ -28,8 +28,7 @@ const Cart = () => {
             clearCart();
             alert("Votre commande a été soumise avec succès !");
         } catch (error) {
-            // Gérer l'erreur, par exemple afficher un message d'erreur spécifique
-            //alert("Une erreur est survenue lors de la soumission de votre commande.");
+            // Gérer l'erreur
             console.log(error)
         }
     };
@@ -60,7 +59,7 @@ const Cart = () => {
                                 <tr key={item.id}>
                                     <th scope="row">{index + 1}</th>
                                     <td>{item.name}</td>
-                                    <td>${item.price}</td>
+                                    <td>{item.price}€</td>
                                     <td>{item.quantity}</td>
                                     <td>
                                         <button

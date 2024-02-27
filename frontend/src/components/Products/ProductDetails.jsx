@@ -1,53 +1,48 @@
 import React, {useEffect, useState} from 'react';
-import {Link} from 'react-router-dom';
 import axios from 'axios';
-import {useCart} from '../../Context/CartContext';
+import {useParams} from 'react-router-dom';
+import {useCart} from '../../Context/CartContext'
 import NavBar from "../../Communs/NavBar/NavBar.jsx";
 import Footer from "../../Communs/Footer/Footer.jsx";
 
 const ProductDetails = () => {
-    const [products, setProducts] = useState([]);
-    // l'URL de base du backend
+    const {id} = useParams(); // Récupère l'ID du produit depuis l'URL
+    const [product, setProduct] = useState(null);
     const baseUrl = "http://127.0.0.1:8000";
     const {addToCart} = useCart();
+
     useEffect(() => {
-        const fetchProducts = async () => {
-            // Utilisation de l'URL de base pour la requête
-            const response = await axios.get(`${baseUrl}/api/products/`);
-            console.log(response.data);
-            // Construisez l'URL absolue pour chaque image de produit
-            const productsWithAbsoluteImageUrl = response.data.map(product => ({
-                ...product,
-                image: baseUrl + product.image // Construire l'URL absolue de l'image
-            }));
-            setProducts(productsWithAbsoluteImageUrl);
+        const fetchProductDetails = async () => {
+            const response = await axios.get(`${baseUrl}/api/products/${id}`);
+            const productWithAbsoluteImageUrl = {
+                ...response.data,
+                image: baseUrl + response.data.image
+            };
+            setProduct(productWithAbsoluteImageUrl);
         };
-        fetchProducts();
-    }, []);
+        fetchProductDetails();
+    }, [id]);
+
+    if (!product) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <>
             <NavBar/>
-            <br/>
-            <div className="container">
-
+            <div className="container mt-5">
                 <div className="row">
-                    {products.map((product) => (
-                        <div className="col-md-4 mb-3" key={product.id}>
-                            <div className="card">
-                                <div className="card-body">
-                                    <h5 className="card-title">{product.name}</h5>
-                                    {/* Assurez-vous que l'image est correctement affichée avec une URL absolue */}
-                                    <img src={product.image} className="img-fluid" alt={product.name}/>
-                                    <p className="card-text">{product.description}</p>
-                                    <p className="card-text">Prix: {product.price} €</p>
-                                    <button onClick={() => addToCart(product)} className="btn btn-success">
-                                        Ajouter au panier
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+                    <div className="col-lg-6">
+                        <img src={product.image} alt={product.name} className="img-fluid"/>
+                    </div>
+                    <div className="col-lg-6">
+                        <h2>{product.name}</h2>
+                        <p>{product.description}</p>
+                        <p className="text-primary font-weight-bold">Prix: {product.price} €</p>
+                        <button className="btn btn-success" onClick={() => addToCart(product)}>
+                            Ajouter au panier
+                        </button>
+                    </div>
                 </div>
             </div>
             <Footer/>
