@@ -1,0 +1,56 @@
+@startuml
+
+class User {
+  - id
+  - username
+  - email
+  - password
+}
+
+class Profile {
+  - user
+  - name
+  - address
+  - city
+  - phone_number
+}
+
+class Category {
+  - id
+  - name
+  - description
+}
+
+class Product {
+  - id
+  - name
+  - slug
+  - description
+  - price
+  - available
+  - image
+  - categories
+  - created_at
+}
+
+class Cart {
+  - id
+  - user
+  - products
+  - total_price
+}
+
+class CartItem {
+  - id
+  - cart
+  - product
+  - quantity
+}
+
+User "1" -- "1" Profile
+Profile "1" -- "*" Cart
+Cart "1" -- "*" CartItem
+CartItem "1" -- "1" Product
+Product "*" -- "*" Category
+
+@enduml
