@@ -27,20 +27,26 @@ export const CartProvider = ({children}) => {
             }
         });
     };
-
     const submitCart = async () => {
         const token = localStorage.getItem('token');
         try {
-            await axios.post('http://127.0.0.1:8000/api/cart/add/', {items: cartItems}, {
-                headers: {'Authorization': `Bearer ${token}`},
-            });
-            clearCart();
+            for (const item of cartItems) {
+                await axios.post('http://127.0.0.1:8000/api/cart/add/', {
+                    product_id: item.id,
+                    quantity: item.quantity
+                }, {
+                    headers: {'Authorization': `Bearer ${token}`},
+                });
+            }
+            clearCart(); // Appeler clearCart pour vider le panier dans l'état du composant
+            localStorage.removeItem('cartItems'); // Supprimer l'élément cartItems du localStorage
             alert('Votre panier a été soumis avec succès.');
         } catch (error) {
             console.error('Error submitting cart:', error);
             alert('Erreur lors de la soumission du panier.');
         }
     };
+
 
     const removeFromCart = (productId) => {
         setCartItems(currentItems => currentItems.filter(item => item.id !== productId));

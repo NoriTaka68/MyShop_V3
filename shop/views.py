@@ -11,10 +11,7 @@ import logging
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def user_detail(request, id):
-    try:
-        user = User.objects.get(pk=id)
-    except User.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    user = get_object_or_404(User, pk=id)
 
     if request.method == 'GET':
         serializer = UserSerializer(user)
@@ -48,10 +45,7 @@ def user_list(request):
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def product_detail(request, id):
-    try:
-        product = Product.objects.get(pk=id)
-    except Product.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    product = get_object_or_404(Product, pk=id)
 
     if request.method == 'GET':
         serializer = ProductSerializer(product)
@@ -98,10 +92,7 @@ def category_list(request):
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def category_detail(request, id):
-    try:
-        category = Category.objects.get(id=id)
-    except Category.DoesNotExist:
-        return Response(status=404)
+    category = get_object_or_404(Category, id=id)
 
     if request.method == 'GET':
         serializer = CategorySerializer(category)
@@ -136,10 +127,17 @@ def add_product_to_cart(request):
 
     product = get_object_or_404(Product, pk=product_id)
     cart, created = Cart.objects.get_or_create(user=request.user)
-    cart_item, created = CartItem.objects.update_or_create(
-        cart=cart, product=product,
-        defaults={'quantity': quantity}
-    )
+
+    try:
+        cart_item = CartItem.objects.get(cart=cart, product=product)
+        cart_item.quantity += quantity
+        cart_item.save()
+    except CartItem.DoesNotExist:
+        cart_item = CartItem.objects.create(
+            cart=cart,
+            product=product,
+            quantity=quantity
+        )
 
     serializer = CartItemSerializer(cart_item)
     return Response(serializer.data, status=status.HTTP_201_CREATED)

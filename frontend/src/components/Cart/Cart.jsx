@@ -24,7 +24,7 @@ const Cart = () => {
         }
 
         try {
-            await submitCart(cartItems, authToken);
+            await submitCart(); // Appeler submitCart sans arguments
             clearCart();
             alert("Votre commande a été soumise avec succès !");
         } catch (error) {
