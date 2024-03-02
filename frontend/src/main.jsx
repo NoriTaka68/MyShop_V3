@@ -23,6 +23,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                     </SearchProvider>
                 </CartProvider>
             </AuthProvider>
-        </React.StrictMode>,
+        </React.StrictMode>
     </BrowserRouter>
 )

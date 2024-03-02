@@ -39,7 +39,7 @@ export const CartProvider = ({children}) => {
                 });
             }
             clearCart(); // Appeler clearCart pour vider le panier dans l'état du composant
-            localStorage.removeItem('cartItems'); // Supprimer l'élément cartItems du localStorage
+            //localStorage.removeItem('cartItems'); // Supprimer l'élément cartItems du localStorage
             alert('Votre panier a été soumis avec succès.');
         } catch (error) {
             console.error('Error submitting cart:', error);
@@ -49,8 +49,25 @@ export const CartProvider = ({children}) => {
 
 
     const removeFromCart = (productId) => {
-        setCartItems(currentItems => currentItems.filter(item => item.id !== productId));
+        setCartItems(currentItems => {
+            const itemIndex = currentItems.findIndex(item => item.id === productId);
+
+            if (itemIndex > -1) {
+                const updatedItems = [...currentItems];
+
+                if (updatedItems[itemIndex].quantity > 1) {
+                    updatedItems[itemIndex].quantity--;
+                } else {
+                    updatedItems.splice(itemIndex, 1);
+                }
+
+                return updatedItems;
+            }
+
+            return currentItems;
+        });
     };
+
 
     const clearCart = () => setCartItems([]);
 

@@ -6,7 +6,7 @@ import NavBar from "../../Communs/NavBar/NavBar.jsx";
 import Footer from "../../Communs/Footer/Footer.jsx";
 
 const Cart = () => {
-    const {cartItems, removeFromCart, clearCart, submitCart} = useCart(); // Accès à submitCart via useCart
+    const {cartItems, removeFromCart, clearCart, submitCart} = useCart();
     const {authToken} = useAuth();
     const navigate = useNavigate();
 
@@ -81,7 +81,7 @@ const Cart = () => {
             </div>
             <Footer/>
         </>
-    );
+    )
 };
 
 export default Cart;
