@@ -7,6 +7,7 @@ from shop.models import Product, Cart, CartItem
 User = get_user_model()
 
 
+# Test d'intégration
 class CartTests(APITestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='testpassword', email='test@example.com')
