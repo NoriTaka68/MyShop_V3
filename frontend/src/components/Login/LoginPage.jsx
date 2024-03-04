@@ -2,19 +2,19 @@ import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useAuth} from '../../Context/AuthContext';
 import NavBar from "../../Communs/NavBar/NavBar.jsx";
-import Footer from "../../Communs/Footer/Footer.jsx"; // Assurez-vous que le chemin est correct
+import Footer from "../../Communs/Footer/Footer.jsx";
 
 const LoginPage = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const navigate = useNavigate(); // Correctement importé de 'react-router-dom'
-    const {login} = useAuth(); // Assurez-vous que 'login' est bien défini dans votre contexte
+    const navigate = useNavigate();
+    const {login} = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await login(username, password); // Assurez-vous que 'login' gère correctement les promesses
-            navigate('/'); // Utilisation correcte de 'navigate'
+            await login(username, password);
+            navigate('/');// redirection
         } catch (error) {
             console.error("Erreur lors de la connexion", error);
         }

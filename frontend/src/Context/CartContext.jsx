@@ -39,7 +39,7 @@ export const CartProvider = ({children}) => {
                 });
             }
             clearCart(); // Appeler clearCart pour vider le panier dans l'état du composant
-            //localStorage.removeItem('cartItems'); // Supprimer l'élément cartItems du localStorage
+            localStorage.removeItem('cartItems'); // Supprimer l'élément cartItems du localStorage
             alert('Votre panier a été soumis avec succès.');
         } catch (error) {
             console.error('Error submitting cart:', error);
