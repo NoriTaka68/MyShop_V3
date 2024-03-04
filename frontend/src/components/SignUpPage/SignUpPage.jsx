@@ -31,7 +31,7 @@ const SignUpPage = () => {
             navigate('/'); // Redirige vers la page de connexion après l'inscription réussie
         } catch (error) {
             if (error.response) {
-                // L'API a répondu avec un code d'erreur qui sort du range 2xx
+                // L'API a répondu avec un code d'erreur
                 setError(error.response.data.message || "Une erreur est survenue lors de l'inscription.");
             } else {
                 setError("Une erreur est survenue lors de l'inscription.");
