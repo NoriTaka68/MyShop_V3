@@ -1,0 +1,3 @@
+Construire les images Docker: docker-compose build
+
+Démarrer les conteneurs:docker-compose up

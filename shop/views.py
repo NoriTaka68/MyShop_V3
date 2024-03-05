@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from .models import Product, Category, Cart, CartItem, User
 from .serializers import ProductSerializer, CategorySerializer, UserSerializer, CartSerializer, CartItemSerializer
 from rest_framework import status
+from MyShop.decorators import csrf_protect_decorator
 from .permissions import IsSuperUser
 import logging
 
@@ -28,6 +29,7 @@ def user_detail(request, id):
 
 
 @api_view(['GET', 'POST'])
+@csrf_protect_decorator  # decorateur contre les attaques CSRF
 # Je spécifie que seul l'administrateur pour avoir access a cette route
 # @permission_classes([IsSuperUser])
 def user_list(request):
@@ -62,6 +64,7 @@ def product_detail(request, id):
 
 
 @api_view(['GET', 'POST'])
+@csrf_protect_decorator
 def product_list(request):
     if request.method == 'GET':
         products = Product.objects.all()
@@ -77,6 +80,7 @@ def product_list(request):
 
 
 @api_view(['GET', 'POST'])
+@csrf_protect_decorator
 def category_list(request):
     if request.method == 'GET':
         categories = Category.objects.all()
@@ -120,6 +124,7 @@ logger = logging.getLogger(__name__)
 
 
 @api_view(['POST'])
+@csrf_protect_decorator
 @permission_classes([IsAuthenticated])
 def add_product_to_cart(request):
     product_id = request.data.get('product_id')
@@ -144,6 +149,7 @@ def add_product_to_cart(request):
 
 
 @api_view(['POST'])
+@csrf_protect_decorator
 def update_cart_item(request):
     cart_item_id = request.data.get('cart_item_id')
     quantity = request.data.get('quantity')

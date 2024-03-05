@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  django:
+    build: ./django_rest
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./django_rest:/code
+    command: python manage.py runserver 0.0.0.0:8000
+
+  react:
+    build: ./react_app
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./react_app:/app
+    stdin_open: true
+    tty: true
